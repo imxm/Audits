@@ -16,14 +16,6 @@ export async function shouldBehaveLikeWithdraw(
   pilotToken: Contract,
   wallet0: SignerWithAddress,
 ): Promise<void> {
-  it("Should fail with token already withdrawn", async function () {
-    await pilotToken.approve(indexFund.address, utils.parseEther("900000000"));
-    await flashToken.transfer(indexFund.address, utils.parseEther("20000000"));
-    await expect(
-      indexFund.withdraw([flashToken.address, flashToken.address], utils.parseEther("200")),
-    ).to.be.revertedWith("INDEXFUND:: TOKEN_ALREADY_WITHDRAWN");
-  });
-
   it("Should successfully transfer the tokens", async function () {
     console.log("USER PILOT BALANCE BEFORE", (await pilotToken.balanceOf(wallet0.address)).toString());
 

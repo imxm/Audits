@@ -20,8 +20,9 @@ contract IndexFund {
         _;
     }
 
-    constructor(address _timelock) public {
+    constructor(address _timelock, address[] memory _lockedFundAddresses) {
         TIMELOCK = _timelock;
+        lockedFundAddresses = _lockedFundAddresses;
     }
 
     function withdraw(address[] memory _tokenAddresses, uint256 _pilotAmount) external {
@@ -42,8 +43,6 @@ contract IndexFund {
         IERC20Burnable(PILOT_ADDRESS).burnFrom(sender, _pilotAmount);
 
         for (uint256 i = 0; i < _tokenAddresses.length; i++) {
-            bytes32 withdrawnId = keccak256(abi.encode(_tokenAddresses[i], sender, timestamp));
-
             tokenBalance = _tokenAddresses[i] == address(0)
                 ? contractAddress.balance
                 : IERC20(_tokenAddresses[i]).balanceOf(contractAddress);
