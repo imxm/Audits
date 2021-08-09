@@ -20,7 +20,7 @@ export async function shouldBehaveLikeWithdraw(
     await pilotToken.approve(indexFund.address, utils.parseEther("900000000"));
     await flashToken.transfer(indexFund.address, utils.parseEther("20000000"));
     await expect(
-      indexFund.withdraw([flashToken.address, flashToken.address], utils.parseEther("200"), false),
+      indexFund.withdraw([flashToken.address, flashToken.address], utils.parseEther("200")),
     ).to.be.revertedWith("INDEXFUND:: TOKEN_ALREADY_WITHDRAWN");
   });
 
@@ -31,7 +31,7 @@ export async function shouldBehaveLikeWithdraw(
 
     await flashToken.transfer(indexFund.address, utils.parseEther("20000000"));
     console.log("USER FLASH BALANCE BEFORE", (await flashToken.balanceOf(wallet0.address)).toString());
-    expect(await indexFund.withdraw([flashToken.address], utils.parseEther("200"), false));
+    expect(await indexFund.withdraw([flashToken.address], utils.parseEther("200")));
     console.log("USER FLASH BALANCE AFTER", (await flashToken.balanceOf(wallet0.address)).toString());
     console.log("USER PILOT BALANCE BEFORE", (await pilotToken.balanceOf(wallet0.address)).toString());
   });
@@ -65,6 +65,6 @@ export async function shouldBehaveLikeWithdraw(
       value: utils.parseEther("1000"),
     });
     await pilotToken.approve(indexFund.address, utils.parseEther("900000000"));
-    expect(await indexFund.withdraw([flashToken.address], utils.parseEther("200"), true));
+    expect(await indexFund.withdraw([flashToken.address], utils.parseEther("200")));
   });
 }

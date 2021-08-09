@@ -7,15 +7,13 @@ import "./interfaces/IERC20Burnable.sol";
 contract IndexFund {
     using SafeERC20 for IERC20Burnable;
 
-    address private constant PILOT_ADDRESS = 0x50cdc3cFdF3ee67c43C12d8e6c9dccA29a4FC9bc; //dummy
+    address private constant PILOT_ADDRESS = 0x37C997B35C619C21323F3518B9357914E8B99525;
 
     address private TIMELOCK;
 
     uint256 private constant PRECISION = 10**18;
 
     address[] lockedFundAddresses;
-
-    mapping(bytes32 => bool) private withdraws;
 
     modifier onlyTimelock() {
         require(msg.sender == TIMELOCK, "INDEX_FUND:: NOT_TIMELOCK");
@@ -26,11 +24,7 @@ contract IndexFund {
         TIMELOCK = _timelock;
     }
 
-    function withdraw(
-        address[] memory _tokenAddresses,
-        uint256 _pilotAmount,
-        bool _value
-    ) external {
+    function withdraw(address[] memory _tokenAddresses, uint256 _pilotAmount) external {
         uint256 pilotPercentage;
 
         uint256 tokenBalance;
@@ -49,21 +43,16 @@ contract IndexFund {
 
         for (uint256 i = 0; i < _tokenAddresses.length; i++) {
             bytes32 withdrawnId = keccak256(abi.encode(_tokenAddresses[i], sender, timestamp));
-            require(withdraws[withdrawnId] == false, "INDEXFUND:: TOKEN_ALREADY_WITHDRAWN");
 
-            tokenBalance = IERC20(_tokenAddresses[i]).balanceOf(contractAddress);
+            tokenBalance = _tokenAddresses[i] == address(0)
+                ? contractAddress.balance
+                : IERC20(_tokenAddresses[i]).balanceOf(contractAddress);
 
             uint256 tokenPercentageToTransfer = (tokenBalance * pilotPercentage) / PRECISION;
 
-            withdraws[withdrawnId] = true;
-
-            IERC20Burnable(_tokenAddresses[i]).safeTransfer(sender, tokenPercentageToTransfer);
-        }
-
-        if (_value) {
-            tokenBalance = contractAddress.balance;
-            require(tokenBalance > 0, "INDEXFUND:: INSUFFICIENT_ETH");
-            sender.transfer((tokenBalance * pilotPercentage) / PRECISION);
+            _tokenAddresses[i] == address(0)
+                ? sender.transfer(tokenPercentageToTransfer)
+                : IERC20Burnable(_tokenAddresses[i]).safeTransfer(sender, tokenPercentageToTransfer);
         }
     }
 
