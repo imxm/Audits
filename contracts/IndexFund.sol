@@ -7,7 +7,7 @@ import "./interfaces/IERC20Burnable.sol";
 contract IndexFund {
     using SafeERC20 for IERC20Burnable;
 
-    address private constant PILOT_ADDRESS = 0x37C997B35C619C21323F3518B9357914E8B99525;
+    address private PILOT_ADDRESS;
 
     address private TIMELOCK;
 
@@ -20,11 +20,17 @@ contract IndexFund {
         _;
     }
 
-    constructor(address _timelock, address[] memory _lockedFundAddresses) {
+    constructor(
+        address _timelock,
+        address[] memory _lockedFundAddresses,
+        address _pilotAddress
+    ) {
         TIMELOCK = _timelock;
         lockedFundAddresses = _lockedFundAddresses;
+        PILOT_ADDRESS = _pilotAddress;
     }
 
+    /// #if_succeeds {:msg "P1"} y == x + 1;
     function withdraw(address[] memory _tokenAddresses, uint256 _pilotAmount) external {
         uint256 pilotPercentage;
 
@@ -42,6 +48,10 @@ contract IndexFund {
 
         IERC20Burnable(PILOT_ADDRESS).burnFrom(sender, _pilotAmount);
 
+        // is it safe to assume that user can withdraw usdt multiple times with lowering compund percentages
+        // Attack scenario Index fund holds only two tokens usdt and usdc. and assume user has 20% of total supply
+        // now he is entitled to 20% of usdt and 20% of usdc
+        // but if he construct token array as following [usdc, usdc, usdt], he will get more than 20% usdc
         for (uint256 i = 0; i < _tokenAddresses.length; i++) {
             tokenBalance = _tokenAddresses[i] == address(0)
                 ? contractAddress.balance
@@ -70,6 +80,7 @@ contract IndexFund {
     function migrateFunds(address payable _newVersion, address[] calldata tokens) external onlyTimelock {
         address thisContract = address(this);
 
+        // migaret
         for (uint24 i = 0; i < tokens.length; i++) {
             IERC20Burnable(tokens[i]).safeTransferFrom(
                 thisContract,
