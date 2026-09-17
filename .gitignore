@@ -1,27 +1,7 @@
-# folders
-.coverage_artifacts/
-.coverage_cache/
-.coverage_contracts/
-.yarn/*
-!.yarn/patches
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
-artifacts/
-build/
-cache/
-coverage/
-dist/
-lib/
+# local working copy of the Oak report corpus, used to regenerate data/reports.json
+audit-reports/
+text/
+*.txt
 node_modules/
-typechain/
-
-# files
-*.env
-*.log
-*.tsbuildinfo
-coverage.json
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+package-lock.json
+__pycache__/
