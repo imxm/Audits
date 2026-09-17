@@ -137,6 +137,29 @@ PROTOCOLS = [
         ],
     },
     {
+        "slug": "zigchain",
+        "name": "Zigchain",
+        "cat": "l1",
+        "stack": "Cosmos SDK",
+        "summary": "Zigchain's core modules over several rounds, reviewed diff-aware between releases.",
+        "role": "Reviewer.",
+        "reports": [
+            "ZIGChain/2025-12-19 Audit Report - ZIGChain Update.pdf",
+            "ZIGChain/2026-05-15 Audit Report – ZIGChain.pdf",
+        ],
+    },
+    {
+        "slug": "hyvechain",
+        "name": "Hyvechain",
+        "cat": "l1",
+        "stack": "Cosmos SDK, EVM precompiles",
+        "summary": "Hyvechain precompiles: the EVM precompile surface exposed over native chain modules.",
+        "role": "Reviewer.",
+        "reports": [
+            "Hyvechain precompiles/2026-05-15 Audit Report - Hyvechain precompiles v1.0.pdf",
+        ],
+    },
+    {
         "slug": "agave-solana",
         "name": "Agave (Solana validator client)",
         "cat": "l1",
@@ -175,18 +198,6 @@ PROTOCOLS = [
         "unpublished": "Three further Dymension reports are not public.",
         "extra_note": "+3 reports not public",
         "unpublished_reports": 3,
-    },
-    {
-        "slug": "zigchain",
-        "name": "Zigchain",
-        "cat": "rollups",
-        "stack": "Cosmos SDK",
-        "summary": "Zigchain's core modules over several rounds, reviewed diff-aware between releases.",
-        "role": "Reviewer.",
-        "reports": [
-            "ZIGChain/2025-12-19 Audit Report - ZIGChain Update.pdf",
-            "ZIGChain/2026-05-15 Audit Report – ZIGChain.pdf",
-        ],
     },
     {
         "slug": "router-protocol",
@@ -386,17 +397,6 @@ PROTOCOLS = [
         "role": "Reviewer.",
         "reports": [
             "MANTRA/2025-11-03 Audit Report - MANTRA Chain v5.0.0 Phases 1-3 v1.3.pdf",
-        ],
-    },
-    {
-        "slug": "hyvechain",
-        "name": "Hyvechain",
-        "cat": "other",
-        "stack": "Cosmos SDK, EVM precompiles",
-        "summary": "Hyvechain precompiles: the EVM precompile surface exposed over native chain modules.",
-        "role": "Reviewer.",
-        "reports": [
-            "Hyvechain precompiles/2026-05-15 Audit Report - Hyvechain precompiles v1.0.pdf",
         ],
     },
     {
